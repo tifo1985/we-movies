@@ -52,6 +52,8 @@ use Symfony\Thanks\Thanks;
  */
 class Flex implements PluginInterface, EventSubscriberInterface
 {
+    public static $storedOperations = [];
+
     /**
      * @var Composer
      */
@@ -110,6 +112,13 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
         $this->config = $composer->getConfig();
         $this->options = $this->initOptions();
+
+        // if Flex is being upgraded, the original operations from the original Flex
+        // instance are stored in the static property, so we can reuse them now.
+        if (property_exists(self::class, 'storedOperations') && self::$storedOperations) {
+            $this->operations = self::$storedOperations;
+            self::$storedOperations = [];
+        }
 
         $symfonyRequire = preg_replace('/\.x$/', '.x-dev', getenv('SYMFONY_REQUIRE') ?: ($composer->getPackage()->getExtra()['symfony']['require'] ?? ''));
 
@@ -201,6 +210,8 @@ class Flex implements PluginInterface, EventSubscriberInterface
      */
     public function deactivate(Composer $composer, IOInterface $io)
     {
+        // store operations in case Flex is being upgraded
+        self::$storedOperations = $this->operations;
         self::$activated = false;
     }
 
@@ -282,6 +293,10 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $versionParser = new VersionParser();
         $packages = [];
         foreach ($this->lock->all() as $name => $info) {
+            if ('9999999.9999999' === $info['version']) {
+                // Fix invalid versions found in some lock files
+                $info['version'] = '99999.9999999';
+            }
             $packages[] = new Package($name, $versionParser->normalize($info['version']), $info['version']);
         }
 
@@ -475,7 +490,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $this->finish($rootDir, $originalComposerJsonHash);
     }
 
-    public function finish(string $rootDir, string $originalComposerJsonHash = null): void
+    public function finish(string $rootDir, ?string $originalComposerJsonHash = null): void
     {
         $this->synchronizePackageJson($rootDir);
         $this->lock->write();
@@ -491,7 +506,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         $vendorDir = trim((new Filesystem())->makePathRelative($this->config->get('vendor-dir'), $rootDir), '/');
 
         $executor = new ScriptExecutor($this->composer, $this->io, $this->options);
-        $synchronizer = new PackageJsonSynchronizer($rootDir, $vendorDir, $executor);
+        $synchronizer = new PackageJsonSynchronizer($rootDir, $vendorDir, $executor, $this->io);
 
         if ($synchronizer->shouldSynchronize()) {
             $lockData = $this->composer->getLocker()->getLockData();
@@ -707,7 +722,7 @@ class Flex implements PluginInterface, EventSubscriberInterface
         return sprintf('<info>%s</> (<comment>>=%s</>): From %s', $matches[1], $matches[2], 'auto-generated recipe' === $matches[3] ? '<comment>'.$matches[3].'</>' : $matches[3]);
     }
 
-    private function shouldRecordOperation(OperationInterface $operation, bool $isDevMode, Composer $composer = null): bool
+    private function shouldRecordOperation(OperationInterface $operation, bool $isDevMode, ?Composer $composer = null): bool
     {
         if ($this->dryRun || $this->reinstall) {
             return false;
@@ -803,6 +818,9 @@ class Flex implements PluginInterface, EventSubscriberInterface
             $composer->getEventDispatcher(),
             $composer->getAutoloadGenerator()
         );
+        if (method_exists($installer, 'setPlatformRequirementFilter')) {
+            $installer->setPlatformRequirementFilter(((array) $this->installer)["\0*\0platformRequirementFilter"]);
+        }
 
         if (!$update) {
             $installer->setUpdateAllowList(['php']);

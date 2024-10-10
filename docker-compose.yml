@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  we-movies-nginx:
+    container_name: we-movies-nginx
+    image: nginx:1.27.2-alpine
+    restart: on-failure
+    volumes:
+      - './:/var/www/app'
+      - './docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro'
+    ports:
+      - "8089:80"
+    depends_on:
+      - we-movies-php
+
+  we-movies-php:
+    container_name: we-movies-php
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    restart: on-failure
+    env_file:
+      - .env
+    user: "${UID}:${GID}"
+    volumes:
+      - './:/var/www/app'
