@@ -8,6 +8,15 @@ framework:
 
     #esi: true
     #fragments: true
+    http_client:
+        scoped_clients:
+            themoviedb.client:
+                base_uri: '%env(THEMOVIEDB_URL)%'
+                auth_bearer: '%env(THEMOVIEDB_BEARER_TOKEN)%'
+                headers:
+                    Accept: 'application/json'
+                query:
+                    language: 'fr'
 
 when@test:
     framework:
