@@ -6,6 +6,7 @@ namespace App\Infrastructure\Ports;
 
 use App\Domain\Entity\Movie;
 use App\Domain\Entity\Paginator;
+use App\Domain\Entity\Video;
 use App\Domain\Gateway\MovieGateway;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,8 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class MovieRepository implements MovieGateway
 {
     private const URI = '/3/discover/movie';
-    private const URI_DETAILS_MOVIE = '/3/movie/';
+    private const URI_DETAILS_MOVIE = '/3/movie/%d';
+    private const URI_VIDEOS_MOVIE = '/3/movie/%d/videos';
 
     public function __construct(
         readonly private HttpClientInterface $themoviedbClient,
@@ -24,7 +26,7 @@ class MovieRepository implements MovieGateway
     ) {
     }
 
-    public function findByPage(int $page = 1): Paginator
+    public function findByPage(int $page = 1, array $criteria = []): Paginator
     {
         try {
             $response = $this->themoviedbClient->request(
@@ -34,7 +36,7 @@ class MovieRepository implements MovieGateway
                     'query' => [
                         'page' => $page,
                         'sort_by' => 'popularity.desc',
-                        'with_genres' => '28',
+                        ...$criteria,
                     ],
                 ],
             );
@@ -57,7 +59,7 @@ class MovieRepository implements MovieGateway
         try {
             $response = $this->themoviedbClient->request(
                 Request::METHOD_GET,
-                self::URI_DETAILS_MOVIE.$id,
+                sprintf(self::URI_DETAILS_MOVIE, $id),
             );
 
             return $this->serializer->denormalize($response->toArray(), Movie::class);
@@ -65,6 +67,23 @@ class MovieRepository implements MovieGateway
             $this->logger->critical('TMDB ERROR: '.$exception->getMessage());
 
             return null;
+        }
+    }
+
+    /** @return Video[] */
+    public function getVideos(int $id): array
+    {
+        try {
+            $response = $this->themoviedbClient->request(
+                Request::METHOD_GET,
+                sprintf(self::URI_VIDEOS_MOVIE, $id),
+            );
+
+            return $this->serializer->denormalize($response->toArray()['results'], Video::class.'[]');
+        } catch (\Throwable $exception) {
+            $this->logger->critical('TMDB ERROR: '.$exception->getMessage());
+
+            return [];
         }
     }
 }

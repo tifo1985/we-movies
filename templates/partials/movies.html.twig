@@ -1,0 +1,53 @@
+<section class="section-long movies-list" id="movies-list" data-principal-movie-id="{{ moviesPaginator.items|length > 0 ? moviesPaginator.items[0].id : '' }}">
+    {% for movie in moviesPaginator.items %}
+        {% if not (moviesPaginator.currentPage == 1 and loop.index0 == 0) %}
+            <div class="section-line">
+                <div class="movie-info-entity">
+                    <div class="entity-poster">
+                        <div class="embed-responsive">
+                            <img class="embed-r esponsive-item movie-poster" data-movie-id="{{ movie.id }}" src="https://image.tmdb.org/t/p/w200/{{ movie.posterPath }}" alt="" />
+                        </div>
+                    </div>
+                    {% include 'partials/movie_details.html.twig' with { 'movie': movie } %}
+                </div>
+        </div>
+        {% endif %}
+    {% endfor %}
+    <div class="section-bottom">
+        <div class="paginator">
+            {% if moviesPaginator.hasPreviousPage() %}
+                <a class="paginator-item" href="javascript:void(0);" onclick="goToPage({{ moviesPaginator.getPreviousPage() }})">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            {% endif %}
+
+            {% set startPage = max(1, moviesPaginator.currentPage - 5) %}
+            {% set endPage = min(moviesPaginator.totalPages, moviesPaginator.currentPage + 4) %}
+            {% if startPage > 1 %}
+                <a class="paginator-item" href="javascript:void(0);" onclick="goToPage(1)">1</a>
+                {% if startPage > 2 %}
+                    <span class="paginator-item">...</span>
+                {% endif %}
+            {% endif %}
+            {% for page in startPage..endPage %}
+                {% if page == moviesPaginator.currentPage %}
+                    <span class="active paginator-item">{{ page }}</span>
+                {% else %}
+                    <a class="paginator-item" href="javascript:void(0);" onclick="goToPage({{ page }})">{{ page }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if endPage < moviesPaginator.totalPages %}
+                {% if endPage < moviesPaginator.totalPages - 1 %}
+                    <span class="paginator-item">...</span>
+                {% endif %}
+                <a class="paginator-item" href="javascript:void(0);" onclick="goToPage({{ moviesPaginator.totalPages }})">{{ moviesPaginator.totalPages }}</a>
+            {% endif %}
+
+            {% if moviesPaginator.hasNextPage() %}
+                <a class="paginator-item" href="javascript:void(0);" onclick="goToPage({{ moviesPaginator.getNextPage() }})">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>

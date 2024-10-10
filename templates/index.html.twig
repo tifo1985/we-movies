@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>We Movies</title>
+        <link href='https://fonts.googleapis.com/css?family=Oswald:300,400,500,700' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700' rel='stylesheet' type='text/css'>
+        {{ encore_entry_link_tags('app') }}
+    </head>
+    <body class="body">
+        <div class="container">
+            <div  id="movie-preview"></div>
+            <div class="sidebar-container">
+                <div class="sidebar section-long">
+                    <section>
+                        {{ render(path('genres_list')) }}
+                    </section>
+                </div>
+                <div class="content" id="movies-container"></div>
+            </div>
+        </div>
+        <div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="movieModalLabel">Movie Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Détails du film ici -->
+                        <div id="modal-content"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ encore_entry_script_tags('app') }}
+    </body>
+</html>

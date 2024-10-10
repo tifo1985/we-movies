@@ -11,6 +11,10 @@ class Movie
     private ?string $posterPath;
     private ?string $title;
     private ?string $overview;
+    private float $voteAverage;
+    private int $voteCount;
+
+    private ?Video $video = null;
 
     public function getId(): int
     {
@@ -66,6 +70,42 @@ class Movie
     public function setOverview(?string $overview): self
     {
         $this->overview = $overview;
+
+        return $this;
+    }
+
+    public function getVideo(): ?Video
+    {
+        return $this->video;
+    }
+
+    public function setVideo(?Video $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    public function getVoteAverage(): float
+    {
+        return $this->voteAverage;
+    }
+
+    public function setVoteAverage(float $voteAverage): self
+    {
+        $this->voteAverage = $voteAverage;
+
+        return $this;
+    }
+
+    public function getVoteCount(): int
+    {
+        return $this->voteCount;
+    }
+
+    public function setVoteCount(int $voteCount): self
+    {
+        $this->voteCount = $voteCount;
 
         return $this;
     }
