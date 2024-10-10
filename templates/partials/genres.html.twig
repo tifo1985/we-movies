@@ -1,0 +1,10 @@
+<ul class="list-categories">
+    {% for genre in genres %}
+        <li>
+            <label>
+                <input type="checkbox" class="genre-checkbox" value="{{ genre.id }}" onchange="filterByGenre()">
+                {{ genre.name }}
+            </label>
+        </li>
+    {% endfor %}
+</ul>

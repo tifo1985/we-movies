@@ -9,7 +9,7 @@
 ###< phpStorm ###
 
 var
-/vendor
+/vendor/
 .env
 
 ###> symfony/webpack-encore-bundle ###

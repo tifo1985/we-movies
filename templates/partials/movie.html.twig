@@ -1,0 +1,12 @@
+<div class="entity-preview">
+    <div class="video-container">
+        <iframe id="movie-video" width="560" height="315"
+                src="https://www.youtube.com/embed/{{ movie.video is defined ? movie.video.key : '' }}"
+                title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+        </iframe>
+    </div>
+</div>
+{% include 'partials/movie_details.html.twig' with { 'movie': movie } %}

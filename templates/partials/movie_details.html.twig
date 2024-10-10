@@ -1,0 +1,17 @@
+<div class="entity-content">
+    <h2 class="entity-title">{{ movie.title }}</h2>
+    <div class="rating">
+        <i class="bi {% if movie.voteAverage >= 1 %}bi-star-fill{% elseif movie.voteAverage > 0 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 2 %}bi-star-fill{% elseif movie.voteAverage > 1 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 3 %}bi-star-fill{% elseif movie.voteAverage > 2 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 4 %}bi-star-fill{% elseif movie.voteAverage > 3 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 5 %}bi-star-fill{% elseif movie.voteAverage > 4 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 6 %}bi-star-fill{% elseif movie.voteAverage > 5 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 7 %}bi-star-fill{% elseif movie.voteAverage > 6 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 8 %}bi-star-fill{% elseif movie.voteAverage > 7 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 9 %}bi-star-fill{% elseif movie.voteAverage > 8 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <i class="bi {% if movie.voteAverage >= 10 %}bi-star-fill{% elseif movie.voteAverage > 9 %}bi-star-half{% else %}bi-star{% endif %}"></i>
+        <span>({{ movie.voteCount }} votes)</span>
+    </div>
+    <div class="entity-description">{{ movie.overview }}</div>
+</div>
