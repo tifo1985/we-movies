@@ -8,8 +8,9 @@
 /.idea
 ###< phpStorm ###
 
-/var/
-/vendor/
+var/
+vendor/
+.env
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
