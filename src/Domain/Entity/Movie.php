@@ -13,6 +13,7 @@ class Movie
     private ?string $overview;
     private float $voteAverage;
     private int $voteCount;
+    private array $genreIds;
 
     private ?Video $video = null;
 
@@ -57,9 +58,11 @@ class Movie
         return $this->title;
     }
 
-    public function setTitle(?string $title): void
+    public function setTitle(?string $title): self
     {
         $this->title = $title;
+
+        return $this;
     }
 
     public function getOverview(): ?string
@@ -106,6 +109,18 @@ class Movie
     public function setVoteCount(int $voteCount): self
     {
         $this->voteCount = $voteCount;
+
+        return $this;
+    }
+
+    public function getGenreIds(): array
+    {
+        return $this->genreIds;
+    }
+
+    public function setGenreIds(array $genreIds): self
+    {
+        $this->genreIds = $genreIds;
 
         return $this;
     }

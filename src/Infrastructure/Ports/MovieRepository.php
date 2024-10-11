@@ -16,6 +16,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class MovieRepository implements MovieGateway
 {
     private const URI = '/3/discover/movie';
+    private const URI_SEARCH = '/3/search/movie';
     private const URI_DETAILS_MOVIE = '/3/movie/%d';
     private const URI_VIDEOS_MOVIE = '/3/movie/%d/videos';
 
@@ -31,7 +32,7 @@ class MovieRepository implements MovieGateway
         try {
             $response = $this->themoviedbClient->request(
                 Request::METHOD_GET,
-                self::URI,
+                !empty($criteria['query']) ? self::URI_SEARCH : self::URI,
                 [
                     'query' => [
                         'page' => $page,

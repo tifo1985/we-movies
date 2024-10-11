@@ -22,7 +22,7 @@ class MovieDetails
         $videos = array_filter(
             $this->movieGateway->getVideos($movieDetailsRequest->getId()),
             fn (Video $video) => !empty($video->getSite()
-            ));
+        ));
         if (!empty($videos)) {
             $movie->setVideo(array_shift($videos));
         }

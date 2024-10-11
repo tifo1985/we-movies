@@ -8,8 +8,21 @@
         {{ encore_entry_link_tags('app') }}
     </head>
     <body class="body">
+        <header>
+            <div class="container header">
+                <div class="logo">WE MOVIES</div>
+                <div class="search">
+                    <input type="text" id="search-input" class="form-control" placeholder="Recherche par titre" aria-label="Recherche par titre">
+                </div>
+
+            </div>
+        </header>
         <div class="container">
             <div  id="movie-preview"></div>
+            <div id="alert-message" class="alert alert-warning d-none" role="alert">
+                La recherche multiple n'est pas prise en charge. Par défaut, l'application utilise le champ d'autocomplétion.
+                Pour rechercher par genre, veuillez vider le champ d'autocomplétion.
+            </div>
             <div class="sidebar-container">
                 <div class="sidebar section-long">
                     <section>

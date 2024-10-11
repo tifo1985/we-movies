@@ -6,6 +6,26 @@ body {
     margin: 0;
 }
 
+header {
+    background: #fff;
+    width: 100%;
+    font-family: 'Oswald';
+}
+
+.header {
+    height: 6rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    margin-right: 2.75rem;
+    font-size: 3rem;
+    min-width: 20%;
+}
+
 h2 {
     font-size: 2rem;
 }
@@ -162,7 +182,7 @@ a {
 
 .rating .bi {
     font-size: 0.8rem;
-    color: gray;
+    color: #cbc8c8;
 }
 .rating .bi-star-fill, .rating .bi-star-half {
     color: gold;

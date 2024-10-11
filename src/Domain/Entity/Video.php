@@ -11,7 +11,7 @@ class Video
     ];
 
     private string $id;
-    private string $site;
+    private ?string $site = null;
     private ?string $key = '';
 
     public function getId(): string
