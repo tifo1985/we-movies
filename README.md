@@ -1,6 +1,48 @@
 # WeMovies
 
-WeMovies est une application web qui utilise Symfony pour gérer des informations sur les films, leurs genres, et leurs détails.
+WeMovies est une application web développée en utilisant Symfony. Elle permet de gérer des informations sur les films, leurs genres, et leurs détails, tout en respectant les principes de la **Clean Architecture**. Ce projet est structuré de manière à maintenir une séparation claire entre la logique métier, la persistance des données, et l'interface utilisateur.
+
+## Structure des Dossiers
+
+Voici la structure principale des dossiers du projet :
+
+```WeMovies/
+├── src/
+│   ├── Domain/                # Contient la logique métier principale (entités, cas d'utilisation, interfaces)
+│   │   ├── Entity/            # Entités représentant les objets métier
+│   │   ├── Gateway/           # Interfaces des adaptateurs pour les services externes et le stockage des données
+│   │   ├── Request/           # Objets de requête pour les cas d'utilisation
+│   │   ├── Response/          # Objets de réponse pour les cas d'utilisation
+│   │   └── UseCase/           # Cas d'utilisation définissant la logique métier
+│   ├── Infrastructure/        # Implémentations des interfaces de la couche domaine
+│   │   └── Ports/             # Adaptateurs pour la persistance et autres services
+│   └── UserInterface/         # Couche de présentation (contrôleurs)
+│       └── Controller/        # Contrôleurs d'interface utilisateur pour l'application
+├── tests/                     # Contient les tests unitaires et fonctionnels
+│   └── Domain/                # Tests de la logique métier
+│       └── UseCase/           # Tests pour les cas d'utilisation
+├── .env                       # Fichier de configuration d'environnement
+├── composer.json              # Dépendances PHP du projet
+├── docker-compose.yml         # Configuration de l'environnement de développement Docker
+└── README.md                  # Documentation du projet
+```
+
+## Architecture
+
+Le projet utilise les concepts de la Clean Architecture, qui vise à :
+- Rendre le code indépendant des frameworks.
+- Limiter les dépendances entre les couches.
+- Faciliter les tests unitaires et l’évolution du projet.
+
+### Illustration de la Clean Architecture
+
+Voici une représentation simplifiée de la Clean Architecture utilisée dans ce projet :
+
+![Clean Architecture](https://storage.googleapis.com/bitloops-github-assets/Documentation%20Images/Clean-Architecture-Uncle-Bob.png)
+
+- **Domain** : Contient la logique métier principale, les entités et les cas d'utilisation.
+- **Infrastructure** : Fournit les implémentations spécifiques pour la persistance des données et les services externes.
+- **UserInterface** : Inclut les contrôleurs, les vues, et tout ce qui est nécessaire pour l'interface utilisateur.
 
 ## Prérequis
 
@@ -13,7 +55,7 @@ WeMovies est une application web qui utilise Symfony pour gérer des information
 
 1. Clonez le dépôt :
 ```bash
-   git clone https://github.com/votre-utilisateur/WeMovies.git
+   git clone https://github.com/tifo1985/WeMovies.git
    cd WeMovies
 ``` 
 
